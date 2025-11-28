@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <AssemblyName>CalendarLite</AssemblyName>
+    <ApplicationIcon>data\app_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="ImportUrlWindow.xaml.cs">
+      <DependentUpon>ImportUrlWindow.xaml</DependentUpon>
+    </Compile>
+    <PackageReference Include="lunar-csharp" Version="1.6.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="data\icon.ico" Condition="Exists('data\\icon.ico')">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

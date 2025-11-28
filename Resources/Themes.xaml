@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 主题切换标记：由 App 初始化（不直接使用） -->
+
+    <!-- 基础颜色 -->
+    <SolidColorBrush x:Key="PanelBackground" Color="#adc3ffc0"/>
+    <SolidColorBrush x:Key="PanelBorder" Color="#DDDDDD"/>
+    <SolidColorBrush x:Key="Foreground" Color="#030303ff"/>
+    <SolidColorBrush x:Key="ForegroundLight" Color="#666666ff"/>
+    <SolidColorBrush x:Key="Weekend-Foreground" Color="#8b2e7bff"/>
+    <SolidColorBrush x:Key="MonthTitleground" Color="#1842fdff"/>
+    <SolidColorBrush x:Key="LunarColor" Color="#666666"/>
+    <SolidColorBrush x:Key="ExtraColor" Color="#333333"/>
+    <SolidColorBrush x:Key="HolidayTextLightBlue" Color="#FF3399FF"/>
+    <SolidColorBrush x:Key="OutsideMonth-Foreground" Color="#BBBBBB"/>
+    <SolidColorBrush x:Key="TodayBorder" Color="#AAAAAA"/>
+    <SolidColorBrush x:Key="HolidayBadgeColor" Color="#00B42A"/>
+    <SolidColorBrush x:Key="WorkdayBadgeColor" Color="#F53F3F"/>
+
+    <!-- 预设颜色（App 启动时会按系统主题覆盖） -->
+</ResourceDictionary>
