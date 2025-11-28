@@ -18,10 +18,10 @@ namespace CalendarLite.Services
 
         public HolidayService(string? filePath)
         {
-            _filePath = filePath;
-            if (!string.IsNullOrEmpty(_filePath))
+            _filePath = filePath;// 初始化文件路径
+            if (!string.IsNullOrEmpty(_filePath))// 如果文件路径不为空
             {
-                Load();
+                Load();// 加载数据
             }
         }
 
@@ -30,14 +30,21 @@ namespace CalendarLite.Services
         /// </summary>
         private void Load()
         {
-            if (string.IsNullOrEmpty(_filePath)) return;
+            if (string.IsNullOrEmpty(_filePath)) return;// 如果文件路径为空，直接返回
             try
             {
-                var path = _filePath;
-                if (!File.Exists(path)) { Logger.Warn($"Data file not found: {path}"); return; }
-                var json = File.ReadAllText(path);
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var root = JsonSerializer.Deserialize<Dictionary<string, CalendarYearData>>(json, options);
+                var path = _filePath;// 确保路径是绝对路径
+                // ✅ 关键：如果路径是相对的，转成绝对路径（基于 exe 所在目录）
+                if (!Path.IsPathRooted(path))
+                {
+                    string baseDir = AppDomain.CurrentDomain.BaseDirectory; // 获取 exe 所在目录
+                    path = Path.Combine(baseDir, path);
+                    Logger.Info($"Relative path converted to absolute: {path}");
+                }
+                if (!File.Exists(path)) { Logger.Warn($"Data file not found: {path}"); return; }// 检查文件是否存在
+                var json = File.ReadAllText(path);// 读取文件内容
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };// 忽略属性大小写
+                var root = JsonSerializer.Deserialize<Dictionary<string, CalendarYearData>>(json, options);// 反序列化 JSON 字符串为字典
                 if (root != null)
                 {
                     foreach (var kv in root)

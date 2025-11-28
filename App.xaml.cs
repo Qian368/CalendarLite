@@ -60,13 +60,14 @@ namespace CalendarLite
                 Logger.Error("ApplySystemTheme failed", ex);
             }
 
+            // 第二步：初始化系统托盘图标
             try
             {
                 _tray = new TrayIconService(
                     onShow: () => Dispatcher.Invoke(() => (Current.MainWindow as MainWindow)?.ShowFromTray()),
                     onExit: () => Dispatcher.Invoke(() => Current.Shutdown())
                 );
-                // 尝试从运行目录的上一级 data 目录加载托盘图标
+                // 尝试从运行目录的 data 目录加载托盘图标
                 bool iconOk = false;
                 try { iconOk = _tray.SetIconFromFile("data\\icon.ico"); } catch { }
                 Logger.Info(iconOk ? "Tray icon initialized with custom icon" : "Tray icon initialized (default icon)");

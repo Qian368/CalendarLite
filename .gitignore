@@ -1,0 +1,32 @@
+# Visual Studio
+.vs/
+src/CalendarLite/bin/*
+src/CalendarLite/obj/*
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+
+# Build outputs
+**/bin/
+**/obj/
+
+# Logs
+logs/
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+**/packages/*
+!**/packages/build/
+
+# Rider
+.idea/
+
+# Misc
+Thumbs.db
+Desktop.ini
+*.log
+/.trae/

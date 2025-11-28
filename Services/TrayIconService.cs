@@ -55,17 +55,26 @@ namespace CalendarLite.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(path)) { try { Logger.Warn("Tray icon path empty"); } catch { } return false; }
-                if (!File.Exists(path)) { try { Logger.Warn("Tray icon file not found: " + path); } catch { } return false; }
-                using var icon = new Icon(path);
-                _notifyIcon.Icon = (Icon)icon.Clone();
-                try { Logger.Info("Tray icon file loaded: " + path); } catch { }
-                return true;
+                if (string.IsNullOrWhiteSpace(path)) { try { Logger.Warn("Tray icon path empty"); } catch { } return false; }// 空路径处理
+
+                // ✅ 关键：如果路径是相对的，转成绝对路径（基于 exe 所在目录）
+                if (!Path.IsPathRooted(path))
+                {
+                    string baseDir = AppDomain.CurrentDomain.BaseDirectory; // 获取 exe 所在目录
+                    path = Path.Combine(baseDir, path);// 合并路径，确保是绝对路径
+                    Logger.Info($"Relative path converted to absolute: {path}");// 记录转换后的绝对路径
+                }
+
+                if (!File.Exists(path)) { try { Logger.Warn("Tray icon file not found: " + path); } catch { } return false; }// 文件不存在处理
+                using var icon = new Icon(path);// 加载图标
+                _notifyIcon.Icon = (Icon)icon.Clone();// 克隆图标，避免资源泄漏
+                try { Logger.Info("Tray icon file loaded: " + path); } catch { }// 记录加载成功日志
+                return true;// 返回加载成功
             }
             catch (Exception ex)
             {
-                try { Logger.Warn("Set tray icon failed: " + ex.Message); } catch { }
-                return false;
+                try { Logger.Warn("Set tray icon failed: " + ex.Message); } catch { } // 记录加载失败日志
+                return false; // 返回加载失败
             }
         }
 

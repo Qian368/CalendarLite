@@ -31,6 +31,7 @@ namespace CalendarLite
         {
             InitializeComponent();
 
+            // 第一步：初始化假日服务
             try
             {
                 _holidayService = new HolidayService("data\\data.json");
@@ -43,9 +44,11 @@ namespace CalendarLite
                 _holidayService = new HolidayService(null);
             }
 
+            // 第二步：初始化当前月份为当前系统时间的月份
             _currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             RenderMonth();
 
+            // 第三步：初始化定时器，每秒钟更新一次时间显示
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
             _timer.Start();
@@ -448,7 +451,7 @@ namespace CalendarLite
         /// <summary>
         /// 统一处理导入结果（刷新数据+界面）
         /// </summary>
-        private void HandleImportResult(bool isSuccess)
+        public void HandleImportResult(bool isSuccess)
         {
             if (isSuccess)
             {
