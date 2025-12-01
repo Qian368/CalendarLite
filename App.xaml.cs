@@ -122,7 +122,9 @@ namespace CalendarLite
         }
 
         /// <summary>
-        /// 根据系统“浅色/深色”模式设置资源字典颜色。
+        /// 根据系统“浅色/深色”模式标记当前主题，不覆盖颜色键。
+        /// 说明：为了保证你在 Themes.xaml 或插件中选取的颜色 100% 生效，
+        /// 这里仅设置布尔标记 IsLightTheme，保留所有颜色键原值。
         /// </summary>
         private void ApplySystemTheme()
         {
@@ -134,33 +136,15 @@ namespace CalendarLite
                     var useLightTheme = (int?)key.GetValue("AppsUseLightTheme") ?? 1;
                     var light = useLightTheme == 1;
                     Resources["IsLightTheme"] = light;
-                    if (light)
-                    {
-                        Resources["PanelBackground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                        Resources["Foreground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x33, 0x33, 0x33));
-                        Resources["ForegroundLight"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x66, 0x66, 0x66));
-                        Resources["LunarColor"] = Resources["ForegroundLight"];
-                        Resources["ExtraColor"] = Resources["Foreground"];
-                    }
-                    else
-                    {
-                        Resources["PanelBackground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x22, 0x22, 0x22));
-                        Resources["Foreground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                        Resources["ForegroundLight"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xEE, 0xEE, 0xEE));
-                        Resources["LunarColor"] = Resources["ForegroundLight"];
-                        Resources["ExtraColor"] = Resources["ForegroundLight"];
-                    }
                 }
                 else
                 {
                     Resources["IsLightTheme"] = true;
-                    Resources["PanelBackground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
                 }
             }
             catch
             {
                 Resources["IsLightTheme"] = true;
-                Resources["PanelBackground"] = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
             }
         }
     }

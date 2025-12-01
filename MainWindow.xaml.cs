@@ -669,6 +669,7 @@ namespace CalendarLite
                     var newSel = new DateTime(y, m, day);
                     _selectedDate = newSel;
                     _currentMonth = new DateTime(y, m, 1);
+                    // 更新顶部日期描述为选中日期
                     RenderMonth();
                     DateDescText.Text = $"{newSel:yyyy年MM月dd日}" + " " + (_holidayService.GetLunar(newSel) ?? string.Empty);
                 }
