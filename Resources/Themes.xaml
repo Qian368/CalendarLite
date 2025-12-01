@@ -20,9 +20,9 @@
     <SolidColorBrush x:Key="ForegroundLight" Color="#fc8484d3"/>
     <!-- 周末日期颜色（周六/周日的日期数字） -->
     <!-- 支持插件 RGBA（#RRGGBBAA），自动转换为 WPF 可用的 ARGB -->
-    <SolidColorBrush x:Key="Weekend-Foreground" Color="{conv:HexColor Value=#26d343b9}"/>
+    <SolidColorBrush x:Key="Weekend-Foreground" Color="{conv:HexColor Value=#3f79f7c2}"/>
 
-    <SolidColorBrush x:Key="TestColor" Color="#26d343b9"/>
+    <SolidColorBrush x:Key="TestColor" Color="#3f79f7c2"/>
 
     <!-- 月份标题颜色（顶部“YYYY年MM月”） -->
     <SolidColorBrush x:Key="MonthTitleground" Color="#FF1842FD"/>
@@ -33,7 +33,7 @@
     <!-- 节日高亮颜色（非纯农历节日/国际节日使用浅蓝） -->
     <SolidColorBrush x:Key="HolidayTextLightBlue" Color="#FF3399FF"/>
     <!-- 相邻月份浅灰颜色（用来补齐月视图前后空位） -->
-    <SolidColorBrush x:Key="OutsideMonth-Foreground" Color="#808080ff"/>
+    <SolidColorBrush x:Key="OutsideMonth-Foreground" Color="{conv:HexColor Value=#8a8a8ab4}"/>
     <!-- 今日边框颜色（今日日期或选中日期边框） -->
     <SolidColorBrush x:Key="TodayBorder" Color="#777777ff"/>
     <!-- 放假角标颜色（“休”） -->
