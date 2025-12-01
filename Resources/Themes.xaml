@@ -41,14 +41,16 @@
     <!-- 补班角标颜色（“班”） -->
     <SolidColorBrush x:Key="WorkdayBadgeColor" Color="#F53F3F"/>
 
+    <SolidColorBrush x:Key="TestColor-2" Color="#9fd836d0"/>
+
     <!-- 按钮相关颜色（背景、悬停、按压、边框） -->
-    <SolidColorBrush x:Key="ButtonBg" Color="#c0bbc0ff"/><!-- 浅灰色 -->
-    <SolidColorBrush x:Key="ButtonHoverBg" Color="#b3b3b31a"/><!-- -->
-    <SolidColorBrush x:Key="ButtonPressedBg" Color="#FF4D87FA"/><!-- 浅蓝色 -->
-    <SolidColorBrush x:Key="ButtonBorder" Color="#FFFCB8B8"/><!-- 浅红色 -->
+    <SolidColorBrush x:Key="ButtonBg" Color="{conv:HexColor Value=#8f3ff7c2}"/>
+    <SolidColorBrush x:Key="ButtonHoverBg" Color="{conv:HexColor Value=#9fd836d0}"/>
+    <SolidColorBrush x:Key="ButtonPressedBg" Color="{conv:HexColor Value=#423ff7f3}"/>
+    <SolidColorBrush x:Key="ButtonBorder" Color="{conv:HexColor Value=#FFFCB8B8}"/>
     <!-- 下拉框背景、边框颜色 -->
-    <SolidColorBrush x:Key="ComboBg" Color="#c0bbc0ff"/>
-    <SolidColorBrush x:Key="ComboBorder" Color="#FFFCB8B8"/>
+    <SolidColorBrush x:Key="ComboBg" Color="{conv:HexColor Value=#8f3ff7c2}"/>
+    <SolidColorBrush x:Key="ComboBorder" Color="{conv:HexColor Value=#FFFCB8B8}"/>
 
     <!--
       RoundedButton：圆角按钮样式
