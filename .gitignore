@@ -1,7 +1,7 @@
 # Visual Studio
 .vs/
-src/CalendarLite/bin/*
-src/CalendarLite/obj/*
+bin/*
+obj/*
 *.user
 *.suo
 *.userosscache
