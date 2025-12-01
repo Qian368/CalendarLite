@@ -14,6 +14,7 @@
         Background="{DynamicResource PanelBackground}"
         AllowsTransparency="False"
         Visibility="Hidden">
+         
     <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="1">
         <Grid Margin="8">
             <Grid.RowDefinitions>
@@ -34,11 +35,12 @@
                 <Button Content="{x:Static res:Messages.PrevMonth}" Style="{DynamicResource RoundedButton}" Width="50" Margin="0,0,8,0" Click="PrevMonth_Click"/>
                 <Button Content="{x:Static res:Messages.TodayButton}" Style="{DynamicResource RoundedButton}" Width="50" Margin="0,0,8,0" Click="Today_Click"/>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
-                    <ComboBox Name="YearSelect" Style="{DynamicResource RoundedComboBox}" Width="80" Margin="0,0,8,0" SelectionChanged="YearSelect_SelectionChanged" MaxDropDownHeight="200" /> 
+                    <!-- 年份选择，如果需要下拉列表立即跳转回本年，添加属性：DropDownOpened="YearSelect_DropDownOpened" -->
+                    <ComboBox Name="YearSelect" Style="{DynamicResource RoundedComboBox}" Width="75" Margin="0,0,8,0" SelectionChanged="YearSelect_SelectionChanged" MaxDropDownHeight="200" /> 
                     <Button Content="{x:Static res:Messages.ImportButton}" Style="{DynamicResource RoundedButton}" Width="50" Margin="0,0,8,0" Click="Import_Click" />
                     <Button Content="{x:Static res:Messages.NextMonth}" Style="{DynamicResource RoundedButton}" Width="50" Click="NextMonth_Click" />
                 </StackPanel>
-                <TextBlock Text="" Name="MonthTitle" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="{DynamicResource MonthTitleground}"/>
+                <TextBlock Text="" Name="MonthTitle" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="17" Foreground="{DynamicResource MonthTitleground}"/>
             </DockPanel>
 
             <!-- 日历网格 -->

@@ -41,16 +41,17 @@
     <!-- 补班角标颜色（“班”） -->
     <SolidColorBrush x:Key="WorkdayBadgeColor" Color="#F53F3F"/>
 
-    <SolidColorBrush x:Key="TestColor-2" Color="#9fd836d0"/>
+    <SolidColorBrush x:Key="TestColor-2" Color="#c666f3ff"/>
 
     <!-- 按钮相关颜色（背景、悬停、按压、边框） -->
-    <SolidColorBrush x:Key="ButtonBg" Color="{conv:HexColor Value=#8f3ff7c2}"/>
+    <SolidColorBrush x:Key="ButtonBg" Color="{conv:HexColor Value=#c666f3ff}"/>
     <SolidColorBrush x:Key="ButtonHoverBg" Color="{conv:HexColor Value=#9fd836d0}"/>
     <SolidColorBrush x:Key="ButtonPressedBg" Color="{conv:HexColor Value=#423ff7f3}"/>
     <SolidColorBrush x:Key="ButtonBorder" Color="{conv:HexColor Value=#FFFCB8B8}"/>
     <!-- 下拉框背景、边框颜色 -->
-    <SolidColorBrush x:Key="ComboBg" Color="{conv:HexColor Value=#8f3ff7c2}"/>
+    <SolidColorBrush x:Key="ComboBg" Color="{conv:HexColor Value=#c666f3ff}"/>
     <SolidColorBrush x:Key="ComboBorder" Color="{conv:HexColor Value=#FFFCB8B8}"/>
+    <SolidColorBrush x:Key="ComboButtonForeground" Color="{conv:HexColor Value=#c666f3ff}"/><!-- 下拉按钮字体颜色 -->
 
     <!--
       RoundedButton：圆角按钮样式
@@ -101,6 +102,18 @@
         <Setter Property="BorderBrush" Value="{StaticResource ComboBorder}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="6,2"/>
+
+        <!-- 关键：设置下拉选项居中对齐 -->
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="8,4"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -117,19 +130,56 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <!-- 当前选择文本（直接绑定到 SelectedItem） -->
-                                    <TextBlock Grid.Column="0" Margin="6,2,22,2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{TemplateBinding Foreground}"
+                                    <TextBlock Grid.Column="0" Margin="6,2,6,2" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{TemplateBinding Foreground}"
                                                Text="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}}"/>
                                     <!-- 下拉按钮 -->
-                                    <ToggleButton Grid.Column="1" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" HorizontalAlignment="Right" VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,4,0">
-                                        <Path Data="M 0 0 L 8 0 L 4 4 Z" Fill="{StaticResource Foreground}" Stretch="Uniform"/>
+                                    <ToggleButton Grid.Column="1" 
+                                                IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                Focusable="False" 
+                                                HorizontalAlignment="Right" 
+                                                Width="19" 
+                                                VerticalAlignment="Stretch" 
+                                                Margin="0,0,0,0">
+                                        
+                                        <ToggleButton.Style>
+                                            <Style TargetType="ToggleButton">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <!-- 默认状态：向下箭头 -->
+                                                        <TextBlock Text="&#xE70D;" 
+                                                                FontFamily="Segoe MDL2 Assets" 
+                                                                FontSize="10" 
+                                                                Foreground="{StaticResource ComboButtonForeground}"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <!-- 展开状态：向上箭头 -->
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <TextBlock Text="&#xE70E;" 
+                                                                        FontFamily="Segoe MDL2 Assets" 
+                                                                        FontSize="10" 
+                                                                        Foreground="{StaticResource ComboButtonForeground}"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
                                     </ToggleButton>
                                 </Grid>
                             </Border>
                             <!-- 下拉弹出层：带圆角与滚动容器，可调整 PopupAnimation -->
                             <Popup Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                                <Border CornerRadius="2" Background="{StaticResource ComboBg}" BorderBrush="{StaticResource ComboBorder}" BorderThickness="1" MaxHeight="200">
+                                <Border CornerRadius="2" Background="{StaticResource ComboBg}" BorderBrush="{StaticResource ComboBorder}" BorderThickness="1" MaxHeight="200" Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"> <!-- 关键：与ComboBox同宽 -->
                                     <ScrollViewer CanContentScroll="True">
-                                        <ItemsPresenter/>
+                                        <!-- 关键：ItemsPresenter不支持对齐属性，需要在ItemContainerStyle中设置 -->
+                                        <ItemsPresenter/>  <!-- 这里会应用上面的居中对齐样式 -->
                                     </ScrollViewer>
                                 </Border>
                             </Popup>

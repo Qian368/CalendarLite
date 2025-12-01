@@ -69,6 +69,8 @@ namespace CalendarLite
             _interceptor.Start(() => Dispatcher.Invoke(ToggleFromClock));
             Logger.Info("TrayClockInterceptor started");
 
+            // 第四步：初始化全局热键
+            // 热键：Ctrl+Alt+U 显示导入对话框
             Deactivated += (s, e) => Hide();
         }
 
@@ -328,7 +330,18 @@ namespace CalendarLite
             // 优先贴近系统托盘钟表位置
             _currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             _selectedDate = DateTime.Now.Date;
+            // 同步年份下拉框为“今年”，保证每次展示都回到当前年份
+            try
+            {
+                YearSelect.SelectedItem = DateTime.Now.Year;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Reset YearSelect to current year failed", ex);
+            }
             RenderMonth();
+
+            // 尝试获取系统托盘钟表位置，若失败则回退到右下角
             var tray = FindWindow("Shell_TrayWnd", null);
             if (tray != IntPtr.Zero)
             {
@@ -677,6 +690,27 @@ namespace CalendarLite
             catch (Exception ex)
             {
                 Logger.Error("YearSelect_SelectionChanged failed", ex);
+            }
+        }
+
+        /// <summary>
+        /// 年份下拉展开事件：展开时自动跳转到“今年”，并尽量滚动到该项。
+        /// 作用：确保用户在打开年份下拉时看到当前年份，符合“回到今年”的期望。
+        /// </summary>
+        private void YearSelect_DropDownOpened(object sender, EventArgs e)
+        {
+            try
+            {
+                var currentYear = DateTime.Now.Year;
+                YearSelect.SelectedItem = currentYear;
+                // 尝试将当前年份滚动到视图中（容器生成后才有效）
+                YearSelect.UpdateLayout();
+                var container = YearSelect.ItemContainerGenerator.ContainerFromItem(currentYear) as System.Windows.Controls.ComboBoxItem;
+                container?.BringIntoView();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("YearSelect_DropDownOpened failed", ex);
             }
         }
         // 月份选择变更，跳转到选定月份的当前日期。
