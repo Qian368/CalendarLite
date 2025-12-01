@@ -22,11 +22,17 @@ namespace CalendarLite.Services
         public void Start(Window window)
         {
             _window = window;
+            // 获取窗口的句柄
             _hwnd = new WindowInteropHelper(window).Handle;
+            // 定义鼠标钩子回调函数
             _proc = HookCallback;
+            // 安装全局鼠标钩子
             using var curProcess = Process.GetCurrentProcess();
+            // 获取当前进程的主模块句柄
             using var curModule = curProcess.MainModule!;
+            // 安装全局鼠标钩子
             _hook = SetWindowsHookEx(WH_MOUSE_LL, _proc, GetModuleHandle(curModule.ModuleName), 0);
+            // 检查钩子是否安装成功
             if (_hook == IntPtr.Zero) Logger.Warn("ClickOutsideCloser hook install failed");
         }
 

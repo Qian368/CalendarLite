@@ -366,13 +366,18 @@ namespace CalendarLite
                 Logger.Info($"ShowNearSystemPanel no tray RB: {Left},{Top}");
             }
             Show();
+            // 确保窗口在任务栏可见
             Activate();
+            // 确保窗口在最前端
             var hwnd = new WindowInteropHelper(this).Handle;
+            // 确保窗口在最前端
             SetForegroundWindow(hwnd);
+
             try
             {
-                // 显示后启动一次性外部点击关闭监听
+                // 关闭之前可能残留的“外部点击关闭”监听，
                 _outsideCloser?.Stop();
+                // 确保在新实例上启动监听，即显示日历后监听外部点击关闭
                 _outsideCloser = new ClickOutsideCloser();
                 _outsideCloser.Start(this);
             }
@@ -420,6 +425,10 @@ namespace CalendarLite
         private async Task ShowImportDialogAsync()
         {
             var dlg = new ImportUrlWindow { Owner = this, Title = Msgs.ImportTitle };
+            
+            // 监听对话框关闭事件
+            dlg.Closed += (s, e) => ReactivateMainWindow();
+
             bool? result = null;
             try { result = dlg.ShowDialog(); }
             catch (Exception ex) { Logger.Error("ShowDialog ImportUrlWindow failed", ex); }
@@ -471,7 +480,9 @@ namespace CalendarLite
                 MessageBox.Show(Msgs.ImportNoData, Msgs.ImportTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-        
+
+
+
         /// <summary>
         /// 批量导入：从指定年份开始，逐年请求，直到遇到“无数据”终止，并汇总结果。
         /// </summary>
@@ -573,6 +584,16 @@ namespace CalendarLite
             await ShowImportDialogAsync();
         }
 
+        /// <summary>
+        /// 重新激活主窗口和托盘监听
+        /// </summary>
+        private void ReactivateMainWindow()
+        {
+            // 修复：对话框关闭后不应启动 OutsideCloser，否则首次点击任务栏日期会被“外部点击”判定并立即隐藏。
+            // 仅停止可能残留的监听；真正的启动时机在 ShowNearSystemPanel 显示窗口之后。
+            try { _outsideCloser?.Stop(); } catch { }
+        }
+
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_TOOLWINDOW = 0x00000080;
         [DllImport("user32.dll")] private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -581,6 +602,9 @@ namespace CalendarLite
         [DllImport("user32.dll", SetLastError = true)] private static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string? lpszWindow);
         [DllImport("user32.dll", SetLastError = true)] private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
         [StructLayout(LayoutKind.Sequential)] private struct RECT { public int Left; public int Top; public int Right; public int Bottom; }
+        /// <summary>
+        /// 递归查找子窗口，根据类名匹配。
+        /// </summary>
         private static IntPtr FindChildByClass(IntPtr parent, string className)
         {
             IntPtr found = IntPtr.Zero;
@@ -654,7 +678,7 @@ namespace CalendarLite
                 Logger.Error("YearSelect_SelectionChanged failed", ex);
             }
         }
-
+        // 月份选择变更，跳转到选定月份的当前日期。
         private void JumpSelectByMonths(int delta)
         {
             var anchor = _selectedDate ?? DateTime.Now.Date;
