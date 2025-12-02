@@ -25,6 +25,11 @@ namespace CalendarLite.Models
         public System.Windows.Thickness BorderThickness { get; set; } = new System.Windows.Thickness(0);
 
         /// <summary>
+        /// 单元格的背景颜色。
+        /// </summary>
+        public Brush Background { get; set; } = Brushes.Transparent;
+
+        /// <summary>
         /// 返回一个空白占位单元格。
         /// </summary>
         public static DayItem Empty => new DayItem();

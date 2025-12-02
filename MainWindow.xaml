@@ -70,7 +70,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="6" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}" Background="Transparent" MouseLeftButtonUp="Day_Click">
+                            <!-- 日期单元格的边框和背景 -->
+                            <Border Padding="6" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}" Background="{Binding Background}" MouseLeftButtonUp="Day_Click">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>

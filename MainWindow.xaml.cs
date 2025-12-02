@@ -175,7 +175,8 @@ namespace CalendarLite
                     badgeText = Msgs.WorkdayBadge;
                     badgeColor = (Brush)Application.Current.Resources["WorkdayBadgeColor"];
                 }
-
+                
+                // 普通日期的背景与边框
                 return new DayItem
                 {
                     // 允许相邻月可点击：始终设置 Date=date，点击时在 Day_Click 中判断跳转到对应月份。
@@ -190,6 +191,8 @@ namespace CalendarLite
                     ExtraFontWeight = extraWeight,
                     BadgeText = badgeText,
                     BadgeColor = badgeColor,
+                    // 选中日期(今天)的背景与边框
+                    Background = isToday ? (Brush)Application.Current.Resources["TodayBackground"] : Brushes.Transparent,
                     BorderBrush = outside
                         ? Brushes.Transparent
                         : ((_selectedDate.HasValue && _selectedDate.Value.Date == date.Date)
@@ -250,8 +253,10 @@ namespace CalendarLite
                     badgeColor = (Brush)Application.Current.Resources["WorkdayBadgeColor"];
                 }
 
+                // 普通日期的背景与边框
                 var item = new DayItem
                 {
+                    // 允许相邻月可点击：始终设置 Date=date，点击时在 Day_Click 中判断跳转到对应月份。
                     Date = date,
                     Day = d.ToString(CultureInfo.InvariantCulture),
                     DayForeground = (Brush)Application.Current.Resources[((date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) ? "Weekend-Foreground" : "Foreground")],
@@ -261,6 +266,8 @@ namespace CalendarLite
                     ExtraFontWeight = extraWeight,
                     BadgeText = badgeText,
                     BadgeColor = badgeColor,
+                    // 选中日期(今天)的背景与边框
+                    Background = isToday ? (Brush)Application.Current.Resources["TodayBackground"] : Brushes.Transparent,
                     BorderBrush = (_selectedDate.HasValue && _selectedDate.Value.Date == date.Date)
                         ? (Brush)Application.Current.Resources["TodayBorder"]
                         : (isToday ? (Brush)Application.Current.Resources["TodayBorder"] : Brushes.Transparent),
@@ -276,6 +283,7 @@ namespace CalendarLite
             int tail = total % 7 == 0 ? 0 : (7 - (total % 7));
             if (tail > 0)
             {
+                // 填充下一月的日期
                 var next = firstDay.AddMonths(1);
                 for (int i = 1; i <= tail; i++)
                 {
@@ -310,10 +318,15 @@ namespace CalendarLite
         {
             try
             {
+                // 跳转回今天所在月份，并选中今天
                 var today = DateTime.Now.Date;
+                // 跳转回今天所在月份
                 _currentMonth = new DateTime(today.Year, today.Month, 1);
+                // 选中今天
                 _selectedDate = today;
+                // 渲染当前月份
                 RenderMonth();
+                // 更新日期描述文本
                 DateDescText.Text = $"{today:yyyy年MM月dd日}" + " " + (_holidayService.GetLunar(today) ?? string.Empty);
             }
             catch (Exception ex)

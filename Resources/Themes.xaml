@@ -36,6 +36,8 @@
     <SolidColorBrush x:Key="OutsideMonth-Foreground" Color="{conv:HexColor Value=#8a8a8ab4}"/>
     <!-- 今日边框颜色（今日日期或选中日期边框） -->
     <SolidColorBrush x:Key="TodayBorder" Color="#777777ff"/>
+    <!-- 今日背景颜色（今日日期或选中日期背景） -->
+    <SolidColorBrush x:Key="TodayBackground" Color="{conv:HexColor Value=#f2f2f2ff}"/>
     <!-- 放假角标颜色（“休”） -->
     <SolidColorBrush x:Key="HolidayBadgeColor" Color="#00B42A"/>
     <!-- 补班角标颜色（“班”） -->
