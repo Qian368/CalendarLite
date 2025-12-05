@@ -180,7 +180,8 @@
                             <!-- 下拉弹出层：带圆角与滚动容器，可调整 PopupAnimation -->
                             <Popup Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                                 <Border CornerRadius="2" Background="{StaticResource ComboBg}" BorderBrush="{StaticResource ComboBorder}" BorderThickness="1" MaxHeight="200" Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"> <!-- 关键：与ComboBox同宽 -->
-                                    <ScrollViewer CanContentScroll="True">
+                                    <!-- 滚动容器：按像素滚动，避免末尾空白（CanContentScroll="True" ，这会启用“按项滚动”）;并设置垂直卷轴可见，水平卷轴隐藏 -->
+                                    <ScrollViewer CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                         <!-- 关键：ItemsPresenter不支持对齐属性，需要在ItemContainerStyle中设置 -->
                                         <ItemsPresenter/>  <!-- 这里会应用上面的居中对齐样式 -->
                                     </ScrollViewer>
