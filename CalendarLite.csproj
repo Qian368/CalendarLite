@@ -2,12 +2,29 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <AssemblyName>CalendarLite</AssemblyName>
     <ApplicationIcon>data\app_icon.ico</ApplicationIcon>
+
+    <!-- 打包运行时 + 单文件 + 针对 Windows x64 -->
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <!-- 瘦身核心配置 -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +34,17 @@
     <PackageReference Include="lunar-csharp" Version="1.6.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="data\icon.ico" Condition="Exists('data\\icon.ico')">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <!-- 强制拷贝 data 文件夹到发布目录 -->
+  <Target Name="CopyDataToPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <DataFiles Include="$(ProjectDir)data\**\*" />
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(DataFiles)"
+      DestinationFolder="$(PublishDir)data\%(RecursiveDir)"
+      OverwriteReadOnlyFiles="true"
+      SkipUnchangedFiles="false" />
+    <Message Text="✅ data 文件夹已强制复制到发布目录" Importance="high" />
+  </Target>
 
 </Project>
